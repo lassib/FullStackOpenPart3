@@ -1,0 +1,20 @@
+# My Variables
+@contentType = application/json
+@baseurl = http://localhost:3001/api
+
+### GET Request
+GET {{baseurl}}/persons/
+Content-Type: {{contentType}
+
+### GET Request
+GET {{baseurl}}/persons/1
+Content-Type: {{contentType}
+
+### POST Request
+POST {{baseurl}}/persons/
+Content-Type: application/json
+
+{
+    "name":"Mari Huana",
+    "number":"0443445566"
+}
