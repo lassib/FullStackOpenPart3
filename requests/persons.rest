@@ -18,3 +18,11 @@ Content-Type: application/json
     "name":"Mari Huana",
     "number":"0443445566"
 }
+
+### DELET Request
+DELETE {{baseurl}}/persons/2
+Content-Type: application/json
+
+### unknown end point
+GET {{baseurl}}/persons/1500
+Content-Type: {{contentType}
