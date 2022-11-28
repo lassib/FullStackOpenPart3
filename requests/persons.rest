@@ -2,6 +2,26 @@
 @contentType = application/json
 @baseurl = http://localhost:3001/api
 
+
+### POST Request
+POST {{baseurl}}/persons/
+Content-Type: application/json
+
+{
+    "name": "Matti", 
+    "number": "09-44-53351"
+}
+
+### POST Request
+POST {{baseurl}}/persons/
+Content-Type: application/json
+
+{
+    "name": "Mirja", 
+    "number": "046-53322"
+}
+
+
 ### GET Request
 GET {{baseurl}}/persons/
 Content-Type: {{contentType}
@@ -10,19 +30,36 @@ Content-Type: {{contentType}
 GET {{baseurl}}/persons/1
 Content-Type: {{contentType}
 
+### unknown end point
+GET {{baseurl}}/personsss/15
+Content-Type: {{contentType}
+
+### DELET Request
+DELETE {{baseurl}}/persons/1
+Content-Type: application/json
+
+
+###
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Pekka", 
+    "number": "09-44-53351"
+}
+
+### POST Request
+POST {{baseurl}}/persons/
+Content-Type: application/json
+
+{ 
+    "number": "09-44-58351"
+}
+
 ### POST Request
 POST {{baseurl}}/persons/
 Content-Type: application/json
 
 {
-    "name":"Mari Huana",
-    "number":"0443445566"
+    "name": "Matti"
 }
-
-### DELET Request
-DELETE {{baseurl}}/persons/2
-Content-Type: application/json
-
-### unknown end point
-GET {{baseurl}}/persons/1500
-Content-Type: {{contentType}
