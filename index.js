@@ -1,14 +1,14 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const app = express();
 
 const url = process.env.MONGO_URI;
 
-mongoose.connect(url)
+mongoose.connect(url);
 
 const personSchema = new mongoose.Schema({
   name: String,
@@ -16,7 +16,15 @@ const personSchema = new mongoose.Schema({
   id: Number,
 });
 
-const Person = mongoose.model('Person', personSchema)
+personSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
+
+const Person = mongoose.model("Person", personSchema);
 
 let persons = [];
 
@@ -27,7 +35,7 @@ app.use(express.json());
 app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :body")
 );
-app.use(express.static('build'))
+app.use(express.static("build"));
 
 app.get("/info", (req, res) => {
   res.send(`<p>Phonebook has info for ${persons.length} people</p>
@@ -35,20 +43,20 @@ app.get("/info", (req, res) => {
 });
 
 app.get("/api/persons", (request, response) => {
-  Person.find({}).then(persons => {
-    response.json(persons)
-  })
+  Person.find({}).then((persons) => {
+    response.json(persons);
+  });
 });
 
 app.get("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((person) => person.id === id);
-
-  if (person) {
-    response.json(person);
-  } else {
-    response.status(404).end();
-  }
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) response.json(person);
+      else res.status(404).end();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
 
 app.delete("/api/persons/:id", (request, response) => {
@@ -87,14 +95,14 @@ app.post("/api/persons", (request, response) => {
   }
 
   const person = {
-    id: generateId(),
     name: body.name,
     number: body.number,
   };
 
-  persons = persons.concat(person);
-
-  response.json(person);
+  new Person(person)
+    .save()
+    .then((savedPerson) => response.json(savedPerson))
+    .catch((error) => console.log(error));
 });
 
 const PORT = process.env.PORT || 3001;
