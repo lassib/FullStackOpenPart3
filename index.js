@@ -3,6 +3,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const logger = require('./logger')
 
 const app = express();
 
@@ -114,6 +115,16 @@ app.put(`/api/persons:id`, (request, response, next) => {
     })
     .catch((error) => next(error));
 });
+
+const requestLogger = (request, response, next) => {
+  logger.info('Method:', request.method)
+  logger.info('Path:  ', request.path)
+  logger.info('Body:  ', request.body)
+  logger.info('---')
+  next()
+}
+
+app.use(requestLogger);
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
